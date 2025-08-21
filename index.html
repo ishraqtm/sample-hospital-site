@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Department - YYZ Hospital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #1a365d;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(74, 144, 226, 0.1);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2b77cb;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4299e1;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #2b77cb;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: #2b77cb;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #4299e1 0%, #2b77cb 50%, #2c5aa0 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.15"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"><animate attributeName="cx" values="200;800;200" dur="20s" repeatCount="indefinite"/></circle><circle cx="800" cy="400" r="150" fill="url(%23a)"><animate attributeName="cy" values="400;100;400" dur="15s" repeatCount="indefinite"/></circle><circle cx="500" cy="700" r="120" fill="url(%23a)"><animate attributeName="r" values="120;200;120" dur="18s" repeatCount="indefinite"/></circle></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .hero-content {
+            z-index: 2;
+            position: relative;
+            max-width: calc(100vw - 420px);
+            margin-right: 400px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: slideInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #2b77cb;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button:hover {
+            background: #f7fafc;
+            color: #2c5aa0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+        }
+
+        .cta-button.secondary:hover {
+            background: white;
+            color: #2b77cb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Emergency Banner */
+        .emergency-banner {
+            background: linear-gradient(135deg, #2c5aa0 0%, #2b77cb 100%);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            border-bottom: 3px solid #4299e1;
+        }
+
+        .emergency-banner h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .phone-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .services h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #1a365d;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: #f7fafc;
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(66, 153, 225, 0.05), transparent);
+            transition: left 0.5s;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(74, 144, 226, 0.2);
+            background: white;
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2b77cb;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* Wait Times */
+        .wait-times {
+            background: linear-gradient(135deg, #bee3f8 0%, #90cdf4 50%, #63b3ed 100%);
+            color: #1a365d;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .wait-times h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #2c5aa0;
+        }
+
+        .wait-display {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .wait-item {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            min-width: 200px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.2);
+        }
+
+        .wait-item:hover {
+            background: white;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(74, 144, 226, 0.3);
+        }
+
+        .wait-time {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #2b77cb;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .wait-item div {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c5aa0;
+        }
+
+        .wait-item small {
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        /* Location & Contact */
+        .location {
+            padding: 80px 0;
+            background: white;
+            color: #1a365d;
+        }
+
+        .location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .location-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #2b77cb;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 4px solid #4299e1;
+        }
+
+        .contact-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(74, 144, 226, 0.1);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: #4299e1;
+        }
+
+        .map-placeholder {
+            background: linear-gradient(135deg, #bee3f8 0%, #90cdf4 100%);
+            height: 350px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #2c5aa0;
+            border: 2px solid #63b3ed;
+            transition: all 0.3s ease;
+        }
+
+        .map-placeholder:hover {
+            background: linear-gradient(135deg, #90cdf4 0%, #63b3ed 100%);
+            transform: scale(1.02);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c5aa0;
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #bee3f8;
+            font-weight: 600;
+        }
+
+        .footer-section a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #bee3f8;
+        }
+
+        .footer-section p {
+            color: #cbd5e0;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Chatbot Modal Styles */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4299e1, #2b77cb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10000;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.4);
+            transition: all 0.3s ease;
+            animation: chatbotPulse 2s infinite;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(74, 144, 226, 0.6);
+        }
+
+        @keyframes chatbotPulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(74, 144, 226, 0.4); }
+            50% { box-shadow: 0 4px 30px rgba(74, 144, 226, 0.8); }
+        }
+
+        .chatbot-modal {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 380px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(74, 144, 226, 0.3);
+            z-index: 10001;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            border: 1px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .chatbot-modal.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #4299e1, #2b77cb);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .chatbot-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .chatbot-body {
+            padding: 1rem;
+            height: calc(100% - 80px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #4a5568;
+            background: #f7fafc;
+        }
+
+        .chatbot-body h3 {
+            color: #2b77cb;
+            margin-bottom: 1rem;
+        }
+
+        .chatbot-body p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-content {
+                max-width: 100vw;
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .wait-display {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .location-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .services h2 {
+                font-size: 2rem;
+            }
+            
+            .chatbot-modal {
+                width: calc(100vw - 40px);
+                right: 20px;
+                left: 20px;
+                height: 400px;
+            }
+            
+            .hero-content {
+                margin-right: 0;
+                padding: 0 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-button {
+                width: 200px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🏥 YYZ Hospital ER</div>
+            <ul class="nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#wait-times">Wait Times</a></li>
+                <li><a href="#location">Location</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Emergency Care When You Need It Most</h1>
+            <p>24/7 expert emergency medical care with state-of-the-art facilities and compassionate staff ready to help you in your time of need.</p>
+            <div class="cta-buttons">
+                <a href="#services" class="cta-button">View Our Services</a>
+                <a href="#wait-times" class="cta-button secondary">Check Wait Times</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="container">
+            <h2>Our Emergency Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🩺</div>
+                    <h3>Trauma Care</h3>
+                    <p>Level I trauma center with specialized equipment and expert surgeons available 24/7 for critical injuries.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">❤️</div>
+                    <h3>Cardiac Care</h3>
+                    <p>Advanced cardiac life support with on-site cardiology specialists and state-of-the-art monitoring equipment.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🧠</div>
+                    <h3>Stroke Center</h3>
+                    <p>Certified stroke center with rapid diagnosis and treatment protocols to minimize brain damage.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">👶</div>
+                    <h3>Pediatric Emergency</h3>
+                    <p>Specialized emergency care for children with pediatric-trained staff and child-friendly environment.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔬</div>
+                    <h3>Lab & Imaging</h3>
+                    <p>On-site laboratory and advanced imaging including CT, MRI, and X-ray for rapid diagnosis.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🩹</div>
+                    <h3>Urgent Care</h3>
+                    <p>Fast-track treatment for minor injuries and illnesses that need immediate but non-emergency care.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="wait-times" id="wait-times">
+        <div class="container">
+            <h2>Current Wait Times</h2>
+            <div class="wait-display">
+                <div class="wait-item">
+                    <span class="wait-time">3.5</span>
+                    <div>Hours</div>
+                    <small>Non-Urgent (CTAS 5)</small>
+                </div>
+                <div class="wait-item">
+                    <span class="wait-time">2.2</span>
+                    <div>Hours</div>
+                    <small>Less Urgent (CTAS 4)</small>
+                </div>
+                <div class="wait-item">
+                    <span class="wait-time">45</span>
+                    <div>Minutes</div>
+                    <small>Urgent (CTAS 3)</small>
+                </div>
+                <div class="wait-item">
+                    <span class="wait-time">15</span>
+                    <div>Minutes</div>
+                    <small>Emergent (CTAS 2)</small>
+                </div>
+                <div class="wait-item">
+                    <span class="wait-time">0</span>
+                    <div>Wait</div>
+                    <small>Resuscitation (CTAS 1)</small>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.8;">Wait times reflect the Canadian Triage & Acuity Scale (CTAS) and may vary based on severity and patient volume. Times shown are from triage to physician assessment.</p>
+        </div>
+    </section>
+
+    <section class="location" id="location">
+        <div class="container">
+            <div class="location-content">
+                <div class="location-info">
+                    <h2>Find Us</h2>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>123 Hospital Drive<br>Healthcare City, HC 12345</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <span>(555) 123-4567</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🕒</span>
+                        <span>Open 24 Hours, 365 Days</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🅿️</span>
+                        <span>Free Parking Available</span>
+                    </div>
+                </div>
+                <div class="map-placeholder">
+                    🗺️ Interactive Map<br>
+                    <script>
+  window.watsonAssistantChatOptions = {
+    integrationID: "a90eb231-46f2-4f29-a105-9f5327dfc446", // The ID of this integration.
+    region: "us-east", // The region your integration is hosted in.
+    serviceInstanceID: "47c346f7-a708-4185-804f-7691eef1fa06", // The ID of your service instance.
+    onLoad: async (instance) => { await instance.render(); }
+  };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+    document.head.appendChild(t);
+  });
+</script>
+</body>
